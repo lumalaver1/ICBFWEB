@@ -1,0 +1,36 @@
+﻿@page
+@using System.Data.SqlClient;
+@inject IConfiguration Configuration  // Inyecta la configuración en la página Razor
+
+@{
+    try
+    {
+        String id = Request.Query["id"];
+        String connectionString = Configuration.GetConnectionString("ConexionSQLServer");
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            String sqlDelete = "DELETE FROM Jardines WHERE IdJardin = @id";
+            using (SqlCommand command = new SqlCommand(sqlDelete, connection))
+            {
+                command.Parameters.AddWithValue("@id", id);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+    }
+    catch (Exception ex)
+    {
+
+    }
+
+    Response.Redirect("/Jardin/Index");
+}

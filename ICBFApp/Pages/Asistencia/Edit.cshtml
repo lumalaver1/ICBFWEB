@@ -1,0 +1,72 @@
+﻿@page
+@model ICBFApp.Pages.Asistencia.EditModel
+@{
+    ViewData["Title"] = "Editar Asistencia";
+}
+
+<br>
+<h2 class="text-center">Editar Asistencia</h2>
+
+@* Muestra mensaje de error al no completar todos los campos del formulario *@
+@if (Model.errorMessage.Length > 0)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+}
+
+@* Muestra mensaje de éxito al editar la asistencia *@
+@if (Model.successMessage.Length > 0)
+{
+    <div class="row mb-3">
+        <div class="col-sm-9">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>@Model.successMessage</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+            </div>
+        </div>
+    </div>
+}
+
+<form method="POST">
+    <input type="hidden" class="form-control" name="idAsistencia" value="@Model.asistenciaInfo.idAsistencia"/>
+
+    <div class="container">
+        <div class="row mb-3 justify-content-center">
+            <div class="col-sm-10">
+                <label class="col-form-label-sm col-form-label">Fecha de la Asistencia:</label>
+                <input type="date" class="form-control" name="fecha" value="@Model.asistenciaInfo.fecha" max="@DateTime.Now.ToString("yyyy-MM-dd")" required>
+            </div>
+        </div>
+
+        <div class="row mb-3 justify-content-center">
+            <div class="col-sm-10">
+                <label class="col-form-label-sm col-form-label" for="nivel">Estado del Niño:</label>
+                <select id="estadoNino" name="estadoNino" class="form-control" required>
+                    <option value="">Seleccione el estado</option>
+                    @foreach (var estadoNino in Model.listaEstado)
+                    {
+                        if (estadoNino.Trim().Equals(Model.asistenciaInfo.estadoNino?.Trim(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            <option value="@estadoNino" selected>@estadoNino</option>
+                        }
+                        else
+                        {
+                            <option value="@estadoNino">@estadoNino</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="offset-sm-3 col-sm-3 d-grid">
+            <button type="submit" class="btn btn-primary">Editar</button>
+        </div>
+        <div class="col-sm-3 d-grid">
+            <a class="btn btn-outline-danger" href="/Asistencia/Index" role="button">Cancelar</a>
+        </div>
+    </div>
+</form>

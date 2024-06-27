@@ -1,0 +1,83 @@
+﻿@page
+@model ICBFApp.Pages.Usuario.CreateModel
+@{
+    ViewData["Title"] = "Registrar Usuarios";
+}
+
+<br>
+<h2 class="text-center">Agregar Nuevo Usuario</h2>
+
+@if (Model.errorMessage.Length > 0)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+}
+
+<form method="POST">
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <label class="col-form-label" for="tipoDocumento">Tipo de Documento:</label>
+                <select id="tipoDocumento" name="tipoDocumento" class="form-control" required>
+                    <option value="">Seleccione un Tipo de Documento</option>
+                    @foreach (var tipoDoc in Model.tipoDocInfo)
+                    {
+                        <option value="@tipoDoc.idTipoDoc">@tipoDoc.tipo</option>
+                    }
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <label class="col-form-label" for="identificacion">Identificación:</label>
+                <input type="text" class="form-control" id="identificacion" name="identificacion" value="@Model.datosBasicos.identificacion"
+                    minlength="8" maxlength="10" pattern="[0-9]{8,10}" title="Por favor, ingrese un número de documento válido de 8 ó 10 dígitos">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <label class="col-form-label" for="nombres">Nombres:</label>
+                <input type="text" class="form-control" maxlength="100" pattern="[A-Za-zÁÉÍÓÚáéíóúüÜñÑ\s]+" id="nombres" name="nombres" value="@Model.datosBasicos.nombres">
+            </div>
+            <div class="col-sm-6">
+                <label class="col-form-label" for="fechaNacimiento">Fecha de Nacimiento:</label>
+                <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" value="@Model.datosBasicos.fechaNacimiento" max="@DateTime.Now.ToString("yyyy-MM-dd")" required>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <label class="col-form-label" for="celular">Teléfono:</label>
+                <input type="tel" class="form-control" id="celular" name="celular" value="@Model.datosBasicos.celular"
+                       maxlength="10" pattern="[0-9]{10}" title="Por favor ingrese un número de celular válido de 10 dígitos">
+            </div>
+            <div class="col-sm-6">
+                <label class="col-form-label" for="direccion">Dirección:</label>
+                <input type="text" class="form-control" id="direccion" maxlength="80" name="direccion" value="@Model.datosBasicos.direccion" required>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <label class="col-form-label" for="rol">Rol:</label>
+                <select id="rol" name="rol" class="form-control" required>
+                    <option value="">Seleccione un Rol</option>
+                    @foreach (var rol in Model.rolInfo)
+                    {
+                        <option value="@rol.idRol">@rol.nombre</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="offset-sm-3 col-sm-3 d-grid">
+                <button type="submit" class="btn btn-primary">Agregar</button>
+            </div>
+            <div class="col-sm-3 d-grid">
+                <a class="btn btn-outline-danger" href="/Usuario/Index" role="button">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,103 @@
+﻿@page
+@model ICBFApp.Pages.Asistencia.IndexModel
+@{
+    ViewData["Title"] = "Asistencia";
+}
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-message">
+        <strong>@Model.SuccessMessage</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="error-message">
+        <strong>@Model.ErrorMessage</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $("#success-message").fadeOut("slow");
+            }, 5000); // 5000 milisegundos = 5 segundos
+        });
+
+        $(document).ready(function () {
+            setTimeout(function () {
+                $("#error-message").fadeOut("slow");
+            }, 5000); // 5000 milisegundos = 5 segundos
+        });
+
+        // Función para mostrar mensaje de confirmación antes de eliminar
+        function confirmarEliminacion(idAsistencia) {
+            Swal.fire({
+                title: '¿Está seguro?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, redirigir a la acción de eliminación
+                    window.location.href = '/Asistencia/Delete?idAsistencia=' + idAsistencia;
+                } else {
+                    // Si el usuario cancela, no hacer nada
+                }
+            });
+        }
+    </script>
+}
+
+<br />
+<h2>Lista de Asistencias</h2>
+
+<div style="display: flex; gap: 10px; align-items: center;">
+    <a class="btn btn-primary btn-sm" href="/Asistencia/Create">
+        <span class="material-symbols-outlined">add</span>
+    </a>
+    <form method="post" asp-page-handler="DownloadPdf" target="_blank">
+        <button type="submit" class="btn btn-sm text-white p-2" style="background-color: #F40F02">Generar PDF</button>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>ID</td>
+            <td>Identificación</td>
+            <td>Nombre</td>
+            <td>Fecha</td>
+            <td>Estado</td>
+            <td>Acciones</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.listAsistenciaInfo)
+        {
+            <tr>
+                <td>@item.idAsistencia</td>
+                <td>@item.datosBasicosInfo.identificacion</td>
+                <td>@item.datosBasicosInfo.nombres</td>
+                <td>@item.fecha</td>
+                <td>@item.estadoNino</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="/Asistencia/Edit?idAsistencia=@item.idAsistencia">
+                        <span class="material-symbols-outlined">edit_square</span>
+                        </a>
+                    <a class="btn btn-danger btn-sm" href="#" onclick="confirmarEliminacion(@item.idAsistencia)">
+                        <span class="material-symbols-outlined">delete</span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

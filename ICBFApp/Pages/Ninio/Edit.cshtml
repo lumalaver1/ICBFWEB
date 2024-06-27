@@ -1,0 +1,132 @@
+﻿@page
+@model ICBFApp.Pages.Ninio.EditModel
+@{
+    ViewData["Title"] = "Editar Niños";
+}
+
+<br>
+<h2 class="text-center">Editar datos Niño</h2>
+
+@if (Model.errorMessage.Length > 0)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+}
+
+<form method="POST">
+    <input type="hidden" class="form-control" name="idNino" value="@Model.ninio.idNinio" />
+    <input type="hidden" class="form-control" name="idDatosBasicos" value="@Model.datosBasicos.idDatosBasicos" />
+
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="col-form-label" for="tipoSangre">Tipo de Sangre:</label>
+                <input type="text" class="form-control" id="tipoSangre" name="tipoSangre" value="@Model.ninio.tipoSangre.Trim()" required readonly />
+            </div>
+            <div class="col-md-6">
+                <label class="col-form-label" for="identificacion">NIUP:</label>
+                <input type="text" class="form-control" id="identificacion" name="identificacion" value="@Model.datosBasicos.identificacion.Trim()"
+                       maxlength="10" pattern="[0-9]{10}" title="Por favor ingrese un número de NIUP válido de 10 dígitos" readonly>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="col-form-label" for="nombres">Nombres:</label>
+                <input type="text" class="form-control" maxlength="100" pattern="[A-Za-zÁÉÍÓÚáéíóúüÜñÑ\s]+" id="nombres" name="nombres" value="@Model.datosBasicos.nombres.Trim()" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="col-form-label" for="fechaNacimiento">Fecha de Nacimiento:</label>
+                <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" value="@Model.datosBasicos.fechaNacimiento" max="@DateTime.Now.ToString("yyyy-MM-dd")" required readonly>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="col-form-label" for="ciudadNacimiento">Ciudad de Nacimiento:</label>
+                <input type="text" class="form-control" maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúüÜñÑ\s]+" id="ciudadNacimiento" name="ciudadNacimiento" value="@Model.ninio.ciudadNacimiento.Trim()" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="col-form-label" for="celular">Teléfono:</label>
+                <input type="tel" class="form-control" id="celular" name="celular" value="@Model.datosBasicos.celular.Trim()"
+                       maxlength="10" pattern="[0-9]{10}" title="Por favor ingrese un número de celular válido de 10 dígitos">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="col-form-label" for="direccion">Dirección:</label>
+                <input type="text" class="form-control" maxlength="80" id="direccion" name="direccion" value="@Model.datosBasicos.direccion.Trim()" required>
+            </div>
+
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label class="col-form-label" for="acudiente">Acudiente:</label>
+                <select id="acudiente" name="acudiente" class="form-control" required>
+                    <option value="">Seleccione el acudiente</option>
+                    @foreach (var acudiente in Model.listaAcudientes)
+                    {
+                        if (acudiente.datosBasicos.identificacion.Trim().Equals(Model.acudienteSelected.datosBasicos.identificacion.Trim(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            <option value="@acudiente.idUsuario" selected>@acudiente.datosBasicos.identificacion - @acudiente.datosBasicos.nombres</option>
+                        }
+                        else
+                        {
+                            <option value="@acudiente.idUsuario">@acudiente.datosBasicos.identificacion - @acudiente.datosBasicos.nombres</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="col-form-label" for="jardin">Jardín:</label>
+                <select id="jardin" name="jardin" class="form-control" required>
+                    <option value="">Seleccione un Jardín</option>
+                    @foreach (var jardin in Model.listaJardines)
+                    {
+                        if (jardin.idJardin.Trim().Equals(Model.jardinSelected.idJardin.Trim(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            <option value="@jardin.idJardin" selected>@jardin.nombre</option>
+                        }
+                        else
+                        {
+                            <option value="@jardin.idJardin">@jardin.nombre</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="col-form-label" for="madreComunitaria">Madre Comunitaria:</label>
+                <select id="madreComunitaria" name="madreComunitaria" class="form-control" required>
+                    <option value="">Seleccione el madre comunitaria</option>
+                    @foreach (var madreComunitaria in Model.listaMadresComunitarias)
+                    {
+                        if (madreComunitaria.datosBasicos.identificacion.Trim().Equals(Model.madreComunitariaSelected.datosBasicos.identificacion.Trim(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            <option value="@madreComunitaria.idUsuario" selected>@madreComunitaria.datosBasicos.identificacion - @madreComunitaria.datosBasicos.nombres</option>
+                        }
+                        else
+                        {
+                            <option value="@madreComunitaria.idUsuario">@madreComunitaria.datosBasicos.identificacion - @madreComunitaria.datosBasicos.nombres</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="offset-sm-3 col-sm-3 d-grid">
+                <button type="submit" class="btn btn-primary">Editar</button>
+            </div>
+            <div class="col-sm-3 d-grid">
+                <a class="btn btn-outline-danger" href="/Ninio/Index" role="button">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,38 @@
+﻿@page
+@model ICBFApp.Pages.TipoDocumento.EditModel
+@{
+    ViewData["Title"] = "Editar Tipos de Documento";
+}
+
+<br />
+<h2 class="text-center">Editar tipo de documento</h2>
+
+@if (Model.errorMessage.Length > 0)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+}
+
+<form method="POST">
+    <div class="container">
+        <input type="hidden" class="form-control" name="idTipoDoc" value="@Model.tipoDocInfo.idTipoDoc" />
+
+        <div class="row mb-3 justify-content-center">
+            <div class="col-sm-10">
+                <label class="col-form-label" for="tipo">Tipo de documento:</label>
+                <input type="text" class="form-control" maxlength="10" id="tipo" pattern="[A-Za-zÁÉÍÓÚáéíóúüÜñÑ\s]+" name="tipo" value="@Model.tipoDocInfo.tipo.Trim()">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="offset-sm-3 col-sm-3 d-grid">
+                <button type="submit" class="btn btn-primary">Editar</button>
+            </div>
+            <div class="col-sm-3 d-grid">
+                <a class="btn btn-outline-danger" href="/TipoDocumento/Index" role="button">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</form>

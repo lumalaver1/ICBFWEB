@@ -1,0 +1,34 @@
+﻿@page
+@using System.Data.SqlClient;
+@inject IConfiguration Configuration  // Inyecta la configuración en la página Razor
+
+@{
+    try
+    {
+        String idTipoDoc = Request.Query["idTipoDoc"];
+        String connectionString = Configuration.GetConnectionString("ConexionSQLServer");
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            String sqlDelete = "DELETE FROM TipoDocumento WHERE idTipoDoc = @idTipoDoc";
+            using (SqlCommand command = new SqlCommand(sqlDelete, connection))
+            {
+                command.Parameters.AddWithValue("@idTipoDoc", idTipoDoc);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        command.Parameters.AddWithValue("@idTipoDoc", idTipoDoc);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+
+    }
+    Response.Redirect("/TipoDocumento/Index");
+}

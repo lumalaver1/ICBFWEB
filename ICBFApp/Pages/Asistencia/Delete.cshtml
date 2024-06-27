@@ -1,0 +1,66 @@
+﻿@page
+@using System.Data.SqlClient;
+@inject IConfiguration Configuration  // Inyecta la configuración en la página Razor
+
+@{
+    string successMessage = "";
+    string errorMessage = "";
+
+    try
+    {
+        String idAsistencia = Request.Query["idAsistencia"];
+        String connectionString = Configuration.GetConnectionString("ConexionSQLServer");
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            String sqlSelect = "SELECT IdAsistencia FROM Asistencias WHERE IdAsistencia = @IdAsistencia";
+            using (SqlCommand selectCommand = new SqlCommand(sqlSelect, connection))
+            {
+                selectCommand.Parameters.AddWithValue("@IdAsistencia", idAsistencia);
+                using (SqlDataReader reader = selectCommand.ExecuteReader())
+                {
+
+                    if (reader.HasRows)
+                    {
+                        reader.Read(); 
+                        int idDatos = reader.GetInt32(0);
+                        reader.Close();
+                        String sqlDelete = "DELETE FROM Asistencias WHERE IdAsistencia = @IdAsistencia";
+
+                        using (SqlCommand command = new SqlCommand(sqlDelete, connection))
+                        {
+                            command.Parameters.AddWithValue("@IdAsistencia", idAsistencia);
+                            using (SqlDataReader reader2 = command.ExecuteReader())
+                            {
+                                if (reader2.Read())
+                                {
+                                    command.Parameters.AddWithValue("@IdAsistencia", idAsistencia);
+                                    command.ExecuteNonQuery();
+                                    successMessage = "Usuario eliminado exitosamente.";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    catch (Exception ex)
+    {
+        errorMessage = "Error al eliminar el usuario: " + ex.Message;
+    }
+
+    if (!string.IsNullOrEmpty(successMessage))
+    {
+        TempData["SuccessMessage"] = successMessage;
+    }
+    else if (!string.IsNullOrEmpty(errorMessage))
+    {
+        TempData["ErrorMessage"] = errorMessage;
+    }
+
+    Response.Redirect("/Asistencia/Index");
+}

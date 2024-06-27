@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICBF - @ViewData["ICBF"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ICBFApp.styles.css" asp-append-version="true" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" id="nav">
+            <div class="container">
+                <!--logo pri-->
+                <a class="navbar-brand" href="/Index">
+                    <img src="~/images/images (1).png" width="70px" class="mr-2">
+                </a>
+             
+
+                        <!-- Sub Opciones niños -->
+                        <li class="nav-item dropdown mr-2">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <p id="link">Niños</p>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/Ninio/Index">Niños</a>
+                                <a class="dropdown-item" href="/AvancesAcademicos/Index">Avances Académicos</a>
+                                <a class="dropdown-item" href="/Asistencia/Index">Asistencia</a>
+                            </div>
+                        </li>
+                       
+                        <!-- Sub Opciones usuarios -->
+                        <li class="nav-item dropdown mr-2">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <p id="link">Usuarios</p>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" link="opciones" href="/Rol/Index">Rol</a>
+                                <a class="dropdown-item" href="/TipoDocumento/Index">Tipo Documento</a>
+                                <a class="dropdown-item" href="/Usuario/Index">Usuario</a>
+                            </div>
+                        </li>
+
+                        <!-- Sub Opciones bienestar familiar -->
+                        <li class="nav-item dropdown mr-2">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <p id="link">Bienestar familiar</p>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/Jardin/Index">Jardín</a>
+                            </div>
+                        </li>                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer id="contactos" class="footer">
+        <div class="container">
+            <div class="row gy-2">
+                <div class="col-md-4">
+                    <i class="bi bi-geo-alt icon"></i>
+                    <div class="address">
+                        <h4>Dirección</h4>
+                        <p>Kr 7f Este #105a</p>
+                        <p>Puerta al Llano - Usme</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <i class="bi bi-telephone icon"></i>
+                    <div>
+                        <h4>Contactos</h4>
+                        <p>
+                            <strong>Celular:</strong> <span>+57 320-458-8382</span><br>
+                            <strong>Email:</strong> <span>claudiayiseth2005@gmail.com</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <i class="bi bi-clock icon"></i>
+                    <div>
+                        <h4>Horario de apertura</h4>
+                        <p>
+                            <strong>Lunes a sábado:</strong> <span>8AM - 6PM</span><br>
+                            <strong>Domingo:</strong> <span>Cerrado</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-12 text-center mt-3">
+                    <h4>Síguenos</h4>
+                    <div class="social-links">
+                        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container text-center mt-3">
+            <p>© <span>Promec JR S.A.S</span> Reservados todos los derechos</p>
+        </div>
+    </footer>
+
+    <style>
+        .footer {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 20px 0;
+            font-size: 14px;
+        }
+
+            .footer .icon {
+                color: #ffffff;
+                font-size: 24px;
+                margin-right: 10px;
+            }
+
+            .footer h4 {
+                font-size: 80px;
+                font-weight: 700;
+                margin-bottom: 10px;
+            }
+
+            .footer p {
+                margin-bottom: 5px;
+            }
+
+            .footer .social-links a {
+                display: inline-block;
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                text-align: center;
+                border-radius: 50%;
+                background-color: #ffffff;
+                color: #343a40;
+                margin-right: 5px;
+            }
+
+                .footer .social-links a:hover {
+                    background-color: #eeeeee;
+                }
+    </style>
+ 
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

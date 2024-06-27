@@ -1,0 +1,53 @@
+﻿@page
+@using System.Data.SqlClient;
+@inject IConfiguration Configuration  // Inyecta la configuración en la página Razor
+
+@{
+    try
+    {
+        String idNinio = Request.Query["id"];
+        String connectionString = Configuration.GetConnectionString("ConexionSQLServer");
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            String sqlSelect = "SELECT IdDatosBasicos FROM Ninos WHERE idNino = @IdNino";
+            using (SqlCommand selectCommand = new SqlCommand(sqlSelect, connection))
+            {
+                selectCommand.Parameters.AddWithValue("@IdNino", idNinio);
+                using (SqlDataReader reader = selectCommand.ExecuteReader())
+                {
+                    // Validar si hay datos
+                    if (reader.Read())
+                    {
+                        // Mover el cursor al primer registro
+                        int idDatos = reader.GetInt32(0);
+                        reader.Close();
+                        String sqlDelete = "DELETE FROM DatosBasicos WHERE IdDatosBasicos = @IdDatosBasicos";
+                        //ESTO PORQUE TENEMOS EL DELETE CASCADE, POR LO TANTO SI LO BORRO DE LA TABLA DATOS BASICOS
+                        // AUTOMATICAMENTE SE BORRA DE LA TABLA USUARIOS
+                        using (SqlCommand command = new SqlCommand(sqlDelete, connection))
+                        {
+                            command.Parameters.AddWithValue("@IdDatosBasicos", idDatos);
+                            using (SqlDataReader reader2 = command.ExecuteReader())
+                            {
+                                if (reader2.Read())
+                                {
+                                    command.Parameters.AddWithValue("@IdDatosBasicos", idDatos);
+                                    command.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+
+    }
+
+    Response.Redirect("/Ninio/Index");
+}

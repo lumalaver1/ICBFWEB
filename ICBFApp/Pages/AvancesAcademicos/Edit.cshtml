@@ -1,0 +1,92 @@
+﻿@page
+@model ICBFApp.Pages.AvancesAcademicos.EditModel
+@{
+    ViewData["Title"] = "Editar Avances Académicos";
+}
+
+<br>
+<h2>Editar Avance académico</h2>
+
+@* Muestra mensaje de error al no completar todos los campos del formulario *@
+@if (Model.errorMessage.Length > 0)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+}
+
+@* Muestra mensaje de éxito al editar el avance académico *@
+@if (Model.successMessage.Length > 0)
+{
+    <div class="row mb-3">
+        <div class="col-sm-9">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>@Model.successMessage</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+            </div>
+        </div>
+    </div>
+}
+
+<form method="POST">
+    <input type="hidden" class="form-control" name="idAvanceAcademico" value="@Model.avanceAcademicoInfo.idAvanceAcademico" />
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="col-form-label-sm col-form-label">Nivel:</label>
+            <select id="nivel" name="nivel" class="form-control" required>
+                <option value="">Selecciona el nivel:</option>
+                @foreach (var nivel in Model.listaNivel)
+                {
+                    if (nivel.Trim().Equals(Model.avanceAcademicoInfo.nivel?.Trim(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        <option value="@nivel" selected>@nivel</option>
+                    }
+                    else
+                    {
+                        <option value="@nivel">@nivel</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label class="col-form-label-sm col-form-label">Nota:</label>
+            <select id="notas" name="notas" class="form-control" required>
+                <option value="">Selecciona la nota:</option>
+                @foreach (var avanceAcademico in Model.listaNota)
+                {
+                    if (avanceAcademico.Trim().Equals(Model.avanceAcademicoInfo.notas?.Trim(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        <option value="@avanceAcademico" selected>@avanceAcademico</option>
+                    }
+                    else
+                    {
+                        <option value="@avanceAcademico">@avanceAcademico</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="col-form-label-sm col-form-label">Descripción:</label>
+            <input type="text" class="form-control" maxlength="150" name="descripcion" value="@Model.avanceAcademicoInfo.descripcion.Trim()">
+        </div>
+
+        <div class="col-md-6">
+            <label class="col-form-label-sm col-form-label">Fecha de entrega:</label>
+            <input type="date" class="form-control" name="fechaEntrega" value="@Model.avanceAcademicoInfo.fechaEntrega" max="@DateTime.Now.ToString("yyyy-MM-dd")" required>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="offset-sm-3 col-sm-3 d-grid">
+            <button type="submit" class="btn btn-primary">Editar</button>
+        </div>
+        <div class="col-sm-3 d-grid">
+            <a class="btn btn-outline-danger" href="/AvancesAcademicos/Index" role="button">Cancelar</a>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,80 @@
+﻿@page
+@model ICBFApp.Pages.Asistencia.CreateModel
+@{
+    ViewData["Title"] = "Registrar Asistencia";
+}
+
+<br>
+<h2 class="text-center">Agregar Asistencia</h2>
+
+@* Muestra mensaje de error al no completar todos los campos del formulario *@
+@if (Model.errorMessage.Length > 0)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+}
+
+@* Muestra mensaje de éxito al agregar una asistencia*@
+@if (Model.successMessage.Length > 0)
+{
+    <div class="row mb-3">
+        <div class="col-sm-9">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>@Model.successMessage</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+            </div>
+        </div>
+    </div>
+}
+
+<form method="POST">
+    <div class="container">
+
+            @*<div class="col-sm-10">
+            <label class="col-form-label-sm col-form-label">Fecha de la Asistencia:</label>
+            <input type="date" class="form-control" name="fecha" id="fechaInput" value="@Model.asistenciaInfo.fecha" max="@DateTime.Now.ToString("yyyy-MM-dd")" required>
+            </div>
+            </div>*@
+            
+        <div class="row mb-3 justify-content-center">
+                <div class="col-sm-10">
+                    <label class="col-form-label-sm col-form-label">Fecha de la Asistencia:</label>
+                    <input type="date" class="form-control" readonly name="fecha" id="fechaInput" value="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" required>
+                </div>
+
+              <div class="col-sm-10">
+                <label class="col-form-label-sm col-form-label" for="SelectedJardinId">Estado del Niño:</label>
+                <select name="estadoNino" value="@Model.asistenciaInfo.estadoNino" class="form-control" required>
+                    <option value=""> Seleccione el estado </option>
+                    <option value="Enfermo">Enfermo</option>
+                    <option value="Sano">Sano</option>
+                    <option value="Decaído">Decaído</option>
+                </select>
+              </div>            
+          </div>
+
+        <div class="row mb-3 justify-content-center">
+            <div class="col-sm-10">
+                <label class="col-form-label-sm col-form-label" for="ninio">Selecciona el niño:</label>
+                <select id="ninio" name="ninio" class="form-control" required>
+                    <option value="">Seleccione el niño</option>
+                    @foreach (var ninio in Model.listaNinios)
+                    {
+                        <option value="@ninio.idNinio">@ninio.datosBasicos.identificacion - @ninio.datosBasicos.nombres</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="offset-sm-3 col-sm-3 d-grid">
+            <button type="submit" class="btn btn-primary">Agregar</button>
+        </div>
+        <div class="col-sm-3 d-grid">
+            <a class="btn btn-outline-danger" href="/Asistencia/Index" role="button">Cancelar</a>
+        </div>
+    </div>
+</form>

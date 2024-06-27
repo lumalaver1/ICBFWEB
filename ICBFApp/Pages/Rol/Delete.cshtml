@@ -1,0 +1,36 @@
+﻿@page
+@using System.Data.SqlClient;
+@inject IConfiguration Configuration  // Inyecta la configuración en la página Razor
+
+@{
+    try
+    {
+        String idRol = Request.Query["idRol"];
+        String connectionString = Configuration.GetConnectionString("ConexionSQLServer");
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            String sqlDelete = "DELETE FROM Roles WHERE idRol = @IdRol";
+            using (SqlCommand command = new SqlCommand(sqlDelete, connection))
+            {
+                command.Parameters.AddWithValue("@IdRol", idRol);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        command.Parameters.AddWithValue("@IdRol", idRol);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+    }
+    catch (Exception ex)
+    {
+
+    }
+
+    Response.Redirect("/Rol/Index");
+}

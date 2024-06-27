@@ -1,0 +1,38 @@
+﻿@page
+@using System.Data.SqlClient;
+@inject IConfiguration Configuration  // Inyecta la configuración en la página Razor
+
+@{
+
+    try
+    {
+        String idAvanceAcademico = Request.Query["idAvanceAcademico"];
+        String connectionString = Configuration.GetConnectionString("ConexionSQLServer");
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            String sqlDelete = "DELETE FROM AvancesAcademicos WHERE idAvanceAcademico = @IdAvanceAcademico";
+            using (SqlCommand command = new SqlCommand(sqlDelete, connection))
+            {
+                command.Parameters.AddWithValue("@IdAvanceAcademico", idAvanceAcademico);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        command.Parameters.AddWithValue("@IdAvanceAcademico", idAvanceAcademico);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+    }
+    catch (Exception)
+    {
+
+    }
+
+    Response.Redirect("/AvancesAcademicos/Index");
+
+}

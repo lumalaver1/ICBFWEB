@@ -1,0 +1,43 @@
+﻿@page
+@model ICBFApp.Pages.Jardin.CreateModel
+@{
+    ViewData["Title"] = "Registrar Jardines";
+}
+
+<br />
+<h2 class="text-center">Agregar Nuevo Jardín</h2>
+
+@if (Model.errorMessage.Length > 0)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+}
+
+<form method="POST">
+    <div class="container">
+        <div class="row mb-3 justify-content-center">
+            <div class="col-sm-10">
+                <label class="col-form-label" for="nombreJardin">Nombre:</label>
+                <input type="text" class="form-control" maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúüÜñÑ\s]+" id="nombreJardin" name="nombreJardin" value="@Model.jardinInfo.nombre">
+            </div>
+        </div>
+
+        <div class="row mb-3 justify-content-center">
+            <div class="col-sm-10">
+                <label class="col-form-label" for="direccionJardin">Dirección:</label>
+                <input type="text" class="form-control" maxlength="50" id="direccionJardin" name="direccionJardin" value="@Model.jardinInfo.direccion" required>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="offset-sm-3 col-sm-3 d-grid">
+                <button type="submit" class="btn btn-primary">Agregar</button>
+            </div>
+            <div class="col-sm-3 d-grid">
+                <a class="btn btn-outline-danger" href="/Jardin/Index" role="button">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</form>
